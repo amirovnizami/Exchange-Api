@@ -3,24 +3,27 @@ class Currency{
     constructor(firstCurrency,secondCurrency){
         this.firstCurrency = firstCurrency;
         this.secondCurrency = secondCurrency;
-        const baseCurrency = 'EUR';
-        const accesskey = '488aa603cd2fb5b76a87282300dceba3';
-        this.url = `http://data.fixer.io/api/latest?access_key=${accesskey}&base=${baseCurrency}`;
         this.amount = null;
     }
 
     exchange(){
 
         return new Promise((resolve,reject) => {
-            fetch(this.url)
+            //sona hansi pul basedirse onu verirsen
+            const url = `https://open.er-api.com/v6/latest/${this.firstCurrency}`;
+
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                const parity = data["rates"][this.secondCurrency];
-                const amount2 = Number(this.amount);
+                    //base pul hansi idise ona uygun diger pullarin nisbeti cixir burada ikinciye uygun nisbeti goturub hesablama gedir
+                    const parity = data["rates"][this.secondCurrency];
+                    const amount2 = Number(this.amount);
 
-                let total = parity * amount2;
-                
-                resolve(total);
+                    //TODO: 1 - pul u deyisende ele eleki isdifadeci pulu secen kimi aninda silmek lazim olmadan cavab ekran gorunsun
+                    //TODO: 2 - base pul hansidirsa o pul cevrilecek pul inputunda cixmamalidi onu duzelt.
+
+                    let total = parity * amount2;
+                    resolve(total);
 
 
                 })
